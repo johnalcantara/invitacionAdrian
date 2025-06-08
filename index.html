@@ -542,13 +542,11 @@ function cerrarModalMapa() {
 }
 
 function abrirMaps() {
-  const direccion = 'Av. Santísima Cruz 519';
-  window.location.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(direccion)}`;
+ abrirGoogleMaps();
 }
 
 function abrirWaze() {
-  const direccion = 'Av. Santísima Cruz 519';
-  window.location.href = `https://waze.com/ul?q=${encodeURIComponent(direccion)}`;
+    abrirWaze();
 }
 
 function abrirNavegador() {
@@ -652,7 +650,33 @@ function abrirNavegador() {
         } else {
             window.open(urlWeb, '_blank');
         }
-        }
+    }
+    function abrirWaze() {
+    const lat = -12.080529;
+    const lng = -77.071390;
+    const scheme = `waze://?ll=${lat},${lng}&navigate=yes`;
+    const fallback = `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`;
+
+    // Intentar abrir la app
+    window.location.href = scheme;
+
+    // Si después de cierto tiempo no se abre, ir a la web
+    setTimeout(() => {
+        window.location.href = fallback;
+    }, 1500);
+    }
+    function abrirGoogleMaps() {
+    const lat = -12.080529;
+    const lng = -77.071390;
+    const scheme = `geo:${lat},${lng}?q=${lat},${lng}(Fiesta+Adrián)`;
+    const fallback = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+
+    window.location.href = scheme;
+
+    setTimeout(() => {
+        window.location.href = fallback;
+    }, 1500);
+    }
 
   </script>
 </body>
