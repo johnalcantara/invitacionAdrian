@@ -293,7 +293,7 @@
   background: repeating-conic-gradient(
     from 0deg,
     #ffd83a  0deg 15deg,
-    #b10011  15deg 30deg,
+    #cf0001  15deg 30deg,
     #00b1f5  30deg 45deg
   );
   background-size: cover;
@@ -428,6 +428,9 @@
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+.btn{
+    background-color: #b50000;
+}
 
   </style>
 </head>
@@ -498,7 +501,7 @@
     </div>
     
     <div class="botonera" id="botonera">
-        <a href="#" onclick="abrirUbicacion()" class="burbuja">
+        <a href="#" onclick="abrirOpcionesMapa()" class="burbuja">
             <span>📍</span>
           <p>¿Cómo llegar?</p>
         </a>
@@ -520,8 +523,39 @@
       <p>Tu presencia y puntualidad es el mejor regalo, pero también me gustan los juguetes 😊</p>
     </div>
   </div>
+  <div id="modalMapa" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="cerrarModalMapa()">&times;</span>
+      <h3>¿Con qué aplicación deseas abrir?</h3>
+      <button class="btn" onclick="abrirMaps()">Google Maps</button>
+      <button class="btn" onclick="abrirWaze()">Waze</button>
+    </div>
+  </div>
   
   <script>
+    function abrirOpcionesMapa() {
+  document.getElementById('modalMapa').style.display = 'block';
+}
+
+function cerrarModalMapa() {
+  document.getElementById('modalMapa').style.display = 'none';
+}
+
+function abrirMaps() {
+  const direccion = 'Av. Santísima Cruz 519';
+  window.location.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(direccion)}`;
+}
+
+function abrirWaze() {
+  const direccion = 'Av. Santísima Cruz 519';
+  window.location.href = `https://waze.com/ul?q=${encodeURIComponent(direccion)}`;
+}
+
+function abrirNavegador() {
+  const direccion = 'Av. Santísima Cruz 519';
+  window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(direccion)}`, '_blank');
+}
+
     function abrirModal() {
     document.getElementById('modalRegalo').style.display = 'block';
   }
