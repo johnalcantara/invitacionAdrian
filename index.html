@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invitación Cumpleaños</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+
+    .video-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      background: black;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 177.78vh; /* 100 * (16/9) */
+      height: 100vh;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    @media (min-aspect-ratio: 16/9) {
+      .video-container iframe {
+        width: 100vw;
+        height: 56.25vw; /* 100 * (9/16) */
+      }
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      display: none;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background-color: #ff4081;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #e91e63;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 24px; }
+      p { font-size: 16px; }
+      button { font-size: 16px; padding: 12px 24px; }
+    }
+
+    .overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .envelope {
+    position: relative;
+    width: 150px;
+    height: 100px;
+    background: #fff;
+    border: 2px solid #333;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .envelope:hover {
+    transform: scale(1.05);
+  }
+
+  .envelope-top {
+    position: absolute;
+    top: -2px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #333;
+    clip-path: polygon(0 0, 50% 60%, 100% 0);
+    z-index: 2;
+  }
+
+  .envelope-front {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    clip-path: polygon(0 0, 100% 0, 50% 60%);
+    z-index: 1;
+  }
+  .envelope-circle {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 28px;
+    height: 28px;
+    background-color: rgb(255, 0, 0); /* Puedes cambiar a dorado, celeste, etc */
+    border-radius: 50%;
+    border: 2px solid white;
+    z-index: 3;
+  }
+  .mensaje {
+    margin-top: 20px;
+    color: #fff;
+    font-size: 18px;
+  }
+
+  @media (max-width: 600px) {
+    .envelope {
+      width: 200px;
+      height: 130px;
+    }
+    .mensaje {
+      font-size: 16px;
+    }
+  }
+  .mensaje-cumple {
+    position: fixed;
+    top: 10%;
+    left: 0;
+    right: 0;
+    margin-right: auto;
+    margin-left: auto;
+    transform: translateX(-50%);
+    font-size: 35px;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px #000;
+    animation: rebotar 1s ease-out, brillar 1.2s ease-in-out infinite alternate;
+    z-index: 5;
+    display: none;
+    background-color: rgba(0, 33, 179, 0.8);
+    padding: 15px 25px;
+    border-radius: 20px;
+    padding: 15px;
+        text-align: center;
+        max-width: 500px;
+        width: 70%;
+    }
+
+    @keyframes rebotar {
+    0%   { transform: translateX(-50%) scale(0.7); opacity: 0; }
+    50%  { transform: translateX(-50%) scale(1.1); opacity: 1; }
+    100% { transform: translateX(-50%) scale(1); }
+    }
+
+    @keyframes brillar {
+    from { box-shadow: 0 0 10px #00258a; }
+    to   { box-shadow: 0 0 25px #fff; }
+    }
+
+    @media (max-width: 600px) {
+        .mensaje-cumple {
+            font-size: 25px;
+            padding: 8px 16px;
+        }
+    }
+
+
+    .foto-bebe-container {
+    position: fixed;
+    top: 33%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    animation: zoomDesdePantalla 1.5s ease-out;
+    }
+
+    .foto-bebe {
+    width: 200px;
+    max-width: 80vw;
+    border-radius: 20px;
+    border: 4px solid #fff;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+    }
+
+    @keyframes zoomDesdePantalla {
+    0% {
+        transform: translate(-50%, -50%) scale(3);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    }
+
+    @keyframes aparecer {
+    from { opacity: 0; transform: translateX(-50%) scale(0.7); }
+    to   { opacity: 1; transform: translateX(-50%) scale(1); }
+    }
+
+    @keyframes zoomBrillo {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes pulsoBrillo {
+    0%, 100% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.6); }
+    50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.9); }
+    }
+
+    @keyframes reducirFoto {
+    from { transform: translateX(-50%) scale(5); opacity: 0; }
+    to { transform: translateX(-50%) scale(1); opacity: 1; }
+    }
+    .foto-bebe-container.aparecer-final {
+    animation: reducirFoto 1.5s ease-out forwards;
+    }
+    .imagen-extra {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    max-height: 35vh;
+    object-fit: contain;
+    z-index: 9;
+    animation: aparecerExtra 1s ease-in;
+    margin-bottom: 110px;
+    }
+
+    @keyframes aparecerExtra {
+    from { opacity: 0; transform: translateX(-50%) translateY(30px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    .estrellas-fondo {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.estrella {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #fff, 0 0 15px #fff;
+  animation: brillar 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes brillar {
+  0%   { opacity: 0.3; transform: scale(0.8); }
+  50%  { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.5; transform: scale(1); }
+}
+
+
+.fondo-rayos {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+  background: repeating-conic-gradient(
+    from 0deg,
+    #ffd83a  0deg 15deg,
+    #b10011  15deg 30deg,
+    #00b1f5  30deg 45deg
+  );
+  background-size: cover;
+  /*animation: girarFondo 40s linear infinite;*/
+  opacity: 1; /* suaviza la intensidad */
+  display: none;
+}
+
+@keyframes girarFondo {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.encabezado {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  color: #fff;
+  background-color: rgba(0, 33, 179, 0.7);
+  padding: 10px;
+  margin-top: 0px;
+  border-radius: 20px;
+  width: 80%;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  display: none;
+}
+.encabezado h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+.encabezado p {
+  font-size: 18px;
+  margin: 4px 0;
+}
+
+.botonera {
+  position: fixed;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+  display: none;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 10;
+}
+
+.burbuja {
+  background: #fff;
+  color: #333;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  text-align: center;
+  padding: 10px;
+  font-size: 22px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.burbuja:hover {
+  transform: scale(1.1);
+}
+
+.burbuja p {
+  font-size: 11px;
+  margin-top: 5px;
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 15px;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  font-family: sans-serif;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: black;
+}
+.borde-brillante {
+  border: 4px solid transparent;
+  border-radius: 20px;
+  padding: 20px;
+  position: relative;
+  z-index: 2;
+  background-clip: padding-box;
+}
+
+.borde-brillante::before {
+  content: "";
+  position: absolute;
+  top: -4px; left: -4px; right: -4px; bottom: -4px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #b0b7f9a1, #ffeb3b, #00bcd4, #f5b0b0);
+  background-size: 300% 300%;
+  animation: brilloBorde 4s linear infinite;
+  z-index: -1;
+}
+
+@keyframes brilloBorde {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+  </style>
+</head>
+<body>
+    <div class="fondo-rayos" id="fondo-rayos"></div>
+
+  <!-- Contenedor de video con YouTube -->
+  <div class="video-container">
+    <iframe id="videoFondo"
+      src="https://www.youtube.com/embed/hLwjqyn8x8o?autoplay=0&mute=1&loop=1&playlist=hLwjqyn8x8o&controls=0&modestbranding=1&showinfo=0"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <!-- Capa de bienvenida -->
+  <div class="overlay" id="overlay">
+    <div class="envelope" onclick="abrirInvitacion()">
+      <div class="envelope-top"></div>
+      <div class="envelope-front"></div>
+      <div class="envelope-circle"></div>
+    </div>
+    <p class="mensaje">Haz clic para abrir la invitación 🎉</p>
+  </div>
+
+  <!-- Contenido -->
+  <div class="content" id="contenido">
+    
+  </div>
+  <div id="mensajeCumple" class="mensaje-cumple">¡Alguien está por cumplir un año! 🎉</div>
+  <div id="mensajeQuien" class="mensaje-cumple" style="display: none;">¿Sabes quién es? 🧐</div>
+  <div id="contador" class="mensaje-cumple" style="display: none; font-size: 60px;"></div>
+
+    <div class="encabezado borde-brillante" id="encabezado">
+        <h2>🎉 Acompáñame en la celebración de mi primer añito 🎉</h2>
+        <p><strong>Día:</strong> 5 de julio</p>
+        <p><strong>Hora:</strong> 3:30 PM</p>
+        <p><strong>Lugar:</strong> Av. Santísima Cruz 519</p>
+    </div>
+    
+    <div id="fotoBebe" class="foto-bebe-container" style="display: none;">
+        <img src="bb.jpg" alt="Adrián" class="foto-bebe">
+    </div>
+    <img id="imagenExtra" src="tortaplim.webp" alt="Decoración" class="imagen-extra" style="display: none;">
+    <div class="estrellas-fondo">
+        <div class="estrella" style="top:10%; left:20%;"></div>
+        <div class="estrella" style="top:30%; left:60%;"></div>
+        <div class="estrella" style="top:50%; left:80%;"></div>
+        <div class="estrella" style="top:70%; left:10%;"></div>
+        <div class="estrella" style="top:85%; left:40%;"></div>
+        <div class="estrella" style="top:5%; left:10%;"></div>
+        <div class="estrella" style="top:15%; left:70%;"></div>
+        <div class="estrella" style="top:25%; left:30%;"></div>
+        <div class="estrella" style="top:35%; left:80%;"></div>
+        <div class="estrella" style="top:50%; left:50%;"></div>
+        <div class="estrella" style="top:60%; left:20%;"></div>
+        <div class="estrella" style="top:70%; left:65%;"></div>
+        <div class="estrella" style="top:80%; left:40%;"></div>
+        <div class="estrella" style="top:90%; left:15%;"></div>
+        <div class="estrella" style="top:95%; left:85%;"></div>
+        <div class="estrella" style="top:8%; left:45%;"></div>
+        <div class="estrella" style="top:22%; left:15%;"></div>
+        <div class="estrella" style="top:48%; left:75%;"></div>
+        <div class="estrella" style="top:68%; left:35%;"></div>
+        <div class="estrella" style="top:88%; left:60%;"></div>
+    </div>
+    
+    <div class="botonera" id="botonera">
+        <a href="https://www.google.com/maps/search/?api=1&query=Av.+Santísima+Cruz+519" target="_blank" class="burbuja">
+          <span>📍</span>
+          <p>¿Cómo llegar?</p>
+        </a>
+        <div class="burbuja" onclick="abrirModal()">
+          <span>🎁</span>
+          <p>¿Qué regalo llevar?</p>
+        </div>
+        <div class="burbuja">
+          <span>📸</span>
+          <p>¡No olvides tomar muchas fotos!</p>
+        </div>
+      </div>
+      
+      <!-- Modal -->
+<div id="modalRegalo" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="cerrarModal()">&times;</span>
+      <h3>🎁 ¿Qué regalo llevar?</h3>
+      <p>Tu presencia y puntualidad es el mejor regalo, pero también me gustan los juguetes 😊</p>
+    </div>
+  </div>
+  
+  <script>
+    function abrirModal() {
+    document.getElementById('modalRegalo').style.display = 'block';
+  }
+
+  function cerrarModal() {
+    document.getElementById('modalRegalo').style.display = 'none';
+  }
+
+  // Cerrar el modal si se hace clic fuera del contenido
+  window.onclick = function(event) {
+    const modal = document.getElementById('modalRegalo');
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  }
+    function abrirInvitacion() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('contenido').style.display = 'block';
+
+        const videoId = "hLwjqyn8x8o";
+        const iframe = document.getElementById('videoFondo');
+        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&loop=1&playlist=${videoId}&controls=0&modestbranding=1`;
+
+        // 1. Mostrar primer mensaje
+        setTimeout(() => {
+            document.getElementById('mensajeCumple').style.display = 'block';
+        }, 5000);
+
+        // 2. Mostrar "¿Sabes quién es?"
+        setTimeout(() => {
+            document.getElementById('mensajeCumple').style.display = 'none';
+            document.getElementById('mensajeQuien').style.display = 'block';
+        }, 7000);
+
+        // 3. Contador 3, 2, 1
+        setTimeout(() => iniciarContador(), 9000);
+
+        // 4. Mostrar foto después del conteo
+        setTimeout(() => {
+            document.getElementById('contador').style.display = 'none';
+            document.getElementById('fondo-rayos').style.display = 'block';
+            const foto = document.getElementById('fotoBebe');
+            foto.style.display = 'block';
+            foto.classList.add('aparecer-final');
+            document.getElementById('imagenExtra').style.display = 'block';         
+            document.getElementById('botonera').style.display = 'flex';   
+            const encabezado = document.getElementById('encabezado');
+            encabezado.style.display = 'block';
+            encabezado.style.opacity = '1';
+            encabezado.style.visibility = 'visible';  
+            mostrarFondoEstrellas();
+        }, 13000);
+    }
+    function mostrarFondoEstrellas() {
+        const fondo = document.getElementById('fondoEstrellas');
+        fondo.style.display = 'block';
+
+        // Crear estrellas fugaces
+        for (let i = 0; i < 10; i++) {
+            const estrella = document.createElement('div');
+            estrella.classList.add('estrella');
+            estrella.style.left = `${Math.random() * 100}vw`;
+            estrella.style.animationDelay = `${Math.random() * 5}s`;
+            estrella.style.animationDuration = `${3 + Math.random() * 3}s`;
+            fondo.appendChild(estrella);
+            
+        }
+    }
+
+    function iniciarContador() {
+        const contador = document.getElementById('contador');
+        const quien = document.getElementById('mensajeQuien');
+        contador.style.display = 'block';
+        quien.style.display = 'none'; // <-- Aquí desaparece el texto
+
+        let numeros = [3, 2, 1];
+        let i = 0;
+
+        const intervalo = setInterval(() => {
+            contador.textContent = numeros[i];
+            i++;
+            if (i === numeros.length) {
+                clearInterval(intervalo);
+            }
+        }, 1000);
+    }
+
+  </script>
+</body>
+</html>
