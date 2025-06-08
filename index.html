@@ -125,7 +125,7 @@
     transform: translate(-50%, -50%);
     width: 28px;
     height: 28px;
-    background-color: rgb(255, 0, 0); /* Puedes cambiar a dorado, celeste, etc */
+    background-color: rgb(255, 0, 0);
     border-radius: 50%;
     border: 2px solid white;
     z-index: 3;
@@ -241,8 +241,8 @@
     animation: reducirFoto 1.5s ease-out forwards;
     }
     .imagen-extra {
-    position: fixed;
-    bottom: 0;
+    position: relative;
+    bottom: 100px;
     left: 50%;
     transform: translateX(-50%);
     width: 70%;
@@ -324,11 +324,11 @@
   display: none;
 }
 .encabezado h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
+    font-size: 16px;
+    margin-bottom: 5px;
 }
 .encabezado p {
-  font-size: 18px;
+  font-size: 14px;
   margin: 4px 0;
 }
 
@@ -471,8 +471,9 @@
     
     <div id="fotoBebe" class="foto-bebe-container" style="display: none;">
         <img src="bb.jpg" alt="Adrián" class="foto-bebe">
+        <img id="imagenExtra" src="tortaplim.webp" alt="Decoración" class="imagen-extra" style="display: none;">
     </div>
-    <img id="imagenExtra" src="tortaplim.webp" alt="Decoración" class="imagen-extra" style="display: none;">
+    
     <div class="estrellas-fondo">
         <div class="estrella" style="top:10%; left:20%;"></div>
         <div class="estrella" style="top:30%; left:60%;"></div>
@@ -497,8 +498,8 @@
     </div>
     
     <div class="botonera" id="botonera">
-        <a href="https://www.google.com/maps/search/?api=1&query=Av.+Santísima+Cruz+519" target="_blank" class="burbuja">
-          <span>📍</span>
+        <a href="#" onclick="abrirUbicacion()" class="burbuja">
+            <span>📍</span>
           <p>¿Cómo llegar?</p>
         </a>
         <div class="burbuja" onclick="abrirModal()">
@@ -529,7 +530,7 @@
     document.getElementById('modalRegalo').style.display = 'none';
   }
 
-  // Cerrar el modal si se hace clic fuera del contenido
+  
   window.onclick = function(event) {
     const modal = document.getElementById('modalRegalo');
     if (event.target === modal) {
@@ -594,7 +595,7 @@
         const contador = document.getElementById('contador');
         const quien = document.getElementById('mensajeQuien');
         contador.style.display = 'block';
-        quien.style.display = 'none'; // <-- Aquí desaparece el texto
+        quien.style.display = 'none'; 
 
         let numeros = [3, 2, 1];
         let i = 0;
@@ -607,6 +608,17 @@
             }
         }, 1000);
     }
+    function abrirUbicacion() {
+        const direccion = 'Av. Santísima Cruz 519';
+        const urlMovil = `geo:0,0?q=${encodeURIComponent(direccion)}`;
+        const urlWeb = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(direccion)}`;
+
+        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            window.location.href = urlMovil;
+        } else {
+            window.open(urlWeb, '_blank');
+        }
+        }
 
   </script>
 </body>
