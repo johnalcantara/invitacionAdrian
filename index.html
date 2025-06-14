@@ -329,7 +329,7 @@
     margin-top: 0px;
 }
 .encabezado p {
-  font-size: 14px;
+  font-size: 18px;
   margin: 4px 0;
 }
 
@@ -383,7 +383,10 @@
 
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   padding: 20px;
   border-radius: 15px;
   width: 80%;
@@ -441,7 +444,7 @@
   <!-- Contenedor de video con YouTube -->
   <div class="video-container">
     <iframe id="videoFondo"
-      src="https://www.youtube.com/embed/hLwjqyn8x8o?autoplay=0&mute=1&loop=1&playlist=hLwjqyn8x8o&controls=0&modestbranding=1&showinfo=0"
+      src="https://www.youtube.com/embed/hLwjqyn8x8o?autoplay=0&mute=0&loop=1&playlist=hLwjqyn8x8o&controls=0&modestbranding=1&showinfo=0"
       frameborder="0"
       allow="autoplay; encrypted-media"
       allowfullscreen>
@@ -510,9 +513,9 @@
           <span>🎁</span>
           <p>¿Qué regalo llevar?</p>
         </div>
-        <div class="burbuja">
-          <span>📸</span>
-          <p>¡No olvides tomar muchas fotos!</p>
+        <div class="burbuja" onclick="abrirModalDiversion()">
+          <span>🎉</span>
+          <p>¿Cómo nos divertiremos?</p>
         </div>
       </div>
       
@@ -532,6 +535,17 @@
       <button class="btn" onclick="abrirWaze()">Waze</button>
     </div>
   </div>
+  <div id="modalDiversion" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="cerrarModalDiversion()">&times;</span>
+      <h3>🎉 ¿Cómo nos divertiremos?</h3>
+      <p id="mensajeDiversion">¡Estamos preparando muchas sorpresas! 🎈</p>
+      <p>- Show Sensorial</p>
+      <p>- Zona de juegos</p>
+      <p>Llega temprano para disfrutarlos al máximo!</p>
+    </div>
+  </div>
+  
   
   <script>
     function abrirOpcionesMapa() {
@@ -549,6 +563,14 @@ function abrirMaps() {
 function abrirWaze() {
     abrirWaze();
 }
+function abrirModalDiversion() {
+  document.getElementById('modalDiversion').style.display = 'block';
+}
+
+function cerrarModalDiversion() {
+  document.getElementById('modalDiversion').style.display = 'none';
+}
+
 
 function abrirNavegador() {
   const direccion = 'Av. Santísima Cruz 519';
@@ -678,7 +700,16 @@ function abrirNavegador() {
         window.location.href = fallback;
     }, 1500);
     }
-     
+    window.onclick = function(event) {
+  if (event.target === document.getElementById('modalRegalo')) {
+    cerrarModal();
+  } else if (event.target === document.getElementById('modalMapa')) {
+    cerrarModalMapa();
+  } else if (event.target === document.getElementById('modalDiversion')) {
+    cerrarModalDiversion();
+  }
+}
+
   </script>
 </body>
 </html>
