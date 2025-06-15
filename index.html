@@ -89,6 +89,13 @@
       .encabezado {
         max-width: 500px;
       }
+      .slide img {
+        width: 100%;
+        height: 280px; 
+        object-fit: cover;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      }
     }
     
     @media (min-width: 391px) and (max-width: 575.99px) {
@@ -111,6 +118,13 @@
       .encabezado {
         max-width: 500px;
       }
+      .slide img {
+        width: 100%;
+        height: 400px; 
+        object-fit: cover;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      }
     }
       
     @media (min-width: 576px) and (max-width: 767.98px) {
@@ -132,6 +146,13 @@
       }
       .encabezado {
         max-width: 500px;
+      }
+      .slide img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
       }
     }
     @media (min-width: 768px) and (max-width: 991.98px) {
@@ -157,6 +178,13 @@
       .encabezado {
         max-width: 580px;
       }
+      .slide img {
+        width: 100%;
+        height: 500px; 
+        object-fit: cover;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      }
     }
     @media (min-width: 992px) and (max-width: 1199.98px) and (orientation: portrait) {
       .encabezado h2 {
@@ -180,6 +208,13 @@
       }
       .encabezado {
         max-width: 750px;
+      }
+      .slide img {
+        width: 100%;
+        height: 690px; 
+        object-fit: cover;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
       }
     }
     @media (min-width: 1200px) and (max-width: 1599px) and (orientation: landscape) {
@@ -700,6 +735,43 @@
 .btn{
     background-color: #b50000;
 }
+.slide {
+  position: relative;
+  display: none;
+  width: 100%;
+}
+
+.slide.active {
+  display: block;
+}
+
+.slide img {
+  width: 100%;
+  border-radius: 15px;
+}
+
+.caption {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  padding: 10px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 14px;
+  animation: fadeIn 1s ease-in-out;
+  width: 80%;
+  text-align: center;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+
 
   </style>
 </head>
@@ -753,9 +825,60 @@
     </div>
     
     <div id="fotoBebe" class="foto-bebe-container" style="display: none;">
-        <img src="bb.jpg" alt="Adrián" class="foto-bebe">
-        <img id="imagenExtra" src="tortaplim.webp" alt="Decoración" class="imagen-extra" style="display: none;">
+      <div class="slider" id="slider">
+        <div class="slide active">
+          <img src="0meses.jpg" alt="0 meses">
+          <div class="caption">👶 ¡Recién nacido, pura ternura!</div>
+        </div>
+        <div class="slide">
+          <img src="1meses.jpg" alt="1 mes">
+          <div class="caption">🌙 1 mes de dulzura</div>
+        </div>
+        <div class="slide">
+          <img src="2meses.jpg" alt="2 meses">
+          <div class="caption">🐣 ¡2 meses aprendiendo a sonreír!</div>
+        </div>
+        <div class="slide">
+          <img src="3meses.jpg" alt="3 meses">
+          <div class="caption">🌼 ¡3 meses llenos de amor!</div>
+        </div>
+        <div class="slide">
+          <img src="4meses.jpg" alt="4 meses">
+          <div class="caption">🧸 Ya juguetea con alegría</div>
+        </div>
+        <div class="slide">
+          <img src="5meses.jpg" alt="5 meses">
+          <div class="caption">🎶 5 meses y su risa es una melodía</div>
+        </div>
+        <div class="slide">
+          <img src="6meses.jpg" alt="6 meses">
+          <div class="caption">✨ Medio año de magia</div>
+        </div>
+        <div class="slide">
+          <img src="7meses.jpg" alt="7 meses">
+          <div class="caption">💫 Explorando el mundo</div>
+        </div>
+        <div class="slide">
+          <img src="8meses.jpg" alt="8 meses">
+          <div class="caption">🎈 Gateando hacia aventuras</div>
+        </div>
+        <div class="slide">
+          <img src="9meses.jpg" alt="9 meses">
+          <div class="caption">🍓 ¡9 meses de pura energía!</div>
+        </div>
+        <div class="slide">
+          <img src="10meses.jpg" alt="10 meses">
+          <div class="caption">🎁 ¡Un regalito que crece rápido!</div>
+        </div>
+        <div class="slide">
+          <img src="bb.jpg" alt="11 meses">
+          <div class="caption">🥳 ¡Ya casi cumple su primer añito!</div>
+        </div>
+      </div>
+      <img id="imagenExtra" src="tortaplim.webp" alt="Decoración" class="imagen-extra" style="display: none;">
     </div>
+    
+      
     
     <div class="estrellas-fondo">
         <div class="estrella" style="top:10%; left:20%;"></div>
@@ -909,7 +1032,8 @@ window.onclick = function(event) {
           const encabezado = document.getElementById('encabezado');
           encabezado.style.display = 'block';
           encabezado.style.opacity = '1';
-          encabezado.style.visibility = 'visible';  
+          encabezado.style.visibility = 'visible'; 
+          iniciarSlideshow(); 
           mostrarFondoEstrellas();
       }, 13000);
   }
@@ -984,14 +1108,29 @@ window.onclick = function(event) {
   }, 1500);
   }
   window.onclick = function(event) {
-if (event.target === document.getElementById('modalRegalo')) {
-  cerrarModal();
-} else if (event.target === document.getElementById('modalMapa')) {
-  cerrarModalMapa();
-} else if (event.target === document.getElementById('modalDiversion')) {
-  cerrarModalDiversion();
+    if (event.target === document.getElementById('modalRegalo')) {
+      cerrarModal();
+    } else if (event.target === document.getElementById('modalMapa')) {
+      cerrarModalMapa();
+    } else if (event.target === document.getElementById('modalDiversion')) {
+      cerrarModalDiversion();
+    }
+  }
+  function iniciarSlideshow() {
+  const slides = document.querySelectorAll('#slider .slide');
+  let index = 0;
+
+  // Asegúrate de empezar limpio
+  slides.forEach(slide => slide.classList.remove('active'));
+  slides[index].classList.add('active');
+
+  setInterval(() => {
+    slides[index].classList.remove('active');
+    index = (index + 1) % slides.length;
+    slides[index].classList.add('active');
+  }, 2500); // 2.5 segundos por slide
 }
-}
+
 
 </script>
 </body>
