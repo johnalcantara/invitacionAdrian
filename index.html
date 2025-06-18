@@ -1178,16 +1178,23 @@ function esSafariMovil() {
   const slides = document.querySelectorAll('#slider .slide');
   let index = 0;
 
-  // Asegúrate de empezar limpio
   slides.forEach(slide => slide.classList.remove('active'));
   slides[index].classList.add('active');
 
-  setInterval(() => {
+  const intervalo = setInterval(() => {
     slides[index].classList.remove('active');
-    index = (index + 1) % slides.length;
-    slides[index].classList.add('active');
-  }, 2500); // 2.5 segundos por slide
+    index++;
+
+    if (index >= slides.length) {
+      clearInterval(intervalo); // Detener al llegar a la última imagen
+      index = slides.length - 1; // Mantener la última imagen activa
+      slides[index].classList.add('active');
+    } else {
+      slides[index].classList.add('active');
+    }
+  }, 3000);
 }
+
 
 
 </script>
